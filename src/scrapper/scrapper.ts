@@ -11,7 +11,7 @@ const getReviews = async (url: string) => {
   console.log('Command-line arguments:', url)
   try {
     const browser = await puppeteer.launch({ headless: false })
-    const page = await browser.newPage()
+    let page = await browser.newPage()
 
     // Navigate to a web page
     await page.goto(url)
@@ -23,15 +23,13 @@ const getReviews = async (url: string) => {
     // Click on a button
     await page.waitForSelector('[data-hook="see-all-reviews-link-foot"]') // Adjust wait time as needed
     await page.click('[data-hook="see-all-reviews-link-foot"]')
+    await page.waitForSelector('#cm_cr-review_list') // Adjust wait time as needed
 
     // Wait for some time to ensure that the page content is updated
-    await page.waitForSelector('#cm_cr-review_list') // Adjust wait time as needed
 
     // Extract data from the DOM
     let isNextButtonDisabled
-    let nextButton
     let reviewDivList = []
-    const htmlContent = await page.content()
     // nextButton = await page.$('.a-last')
     // isNextButtonDisabled = await page.$eval('.a-last', (button) =>
     //   button.classList.contains('a-disabled')
@@ -41,39 +39,72 @@ const getReviews = async (url: string) => {
     while (!isNextButtonDisabled) {
       console.info(isNextButtonDisabled, 'isNextButtonDisabled')
       const reviewDivs = await page.$$('[data-hook="review"]')
-      reviewDivList.push(...reviewDivs)
-      // nextButton = await page.$('.a-last>a:first-child')
-      // const nextButtonHTML = await page.evaluate((link) => {
-      //   // const element = document.querySelector('li.a-last.a-disabled') // Replace '.your-selector' with your desired CSS selector
-      //   return link?.outerHTML
-      // }, nextButton)
-      // isNextButtonDisabled = await page.$('link.a-disabled')
-      // isNextButtonDisabled = await page.evaluate(() =>
-      //   document.querySelector('link.a-disabled')
+      // const profileDivs = await page.$$(
+      //   'div.a-profile-content>span.a-profile-name'
       // )
-      // const htmlContent = await page.evaluate(() => {
-      //   const element = document.querySelector('.a-last>a:first-child') // Replace '.your-selector' with your desired CSS selector
-      //   return element?.outerHTML
+      reviewDivList.push(...reviewDivs)
+      const reviewHTML = await page.$$eval(
+        '[data-hook="review"] div.a-profile-content',
+        (elems) => elems.map((elem) => elem.innerHTML)
+      )
+      // const reviewHTML = await Promise.all(
+      //   reviewDivs.map(
+      //     async (elem) =>
+      //       await page.evaluate(
+      //         (el) =>
+      //           document?.querySelector(
+      //             '[data-hook="review"] div.a-profile-content'
+      //           )?.innerHTML,
+      //         // (el) => el?.querySelector('div.a-profile-content')?.innerHTML,
+      //         elem
+      //       )
+      //   )
+      // )
+      // const reviewHTML = await page.evaluate(() => {
+      //   // const
+      //   // return (reviewDiv as any)?.map(
+      //   //   (elem: any) => elem?.querySelector('.a-profile-content')?.innerHTML
+      //   // )
+      //   const innerHTMLs: any[] = []
+      //   document
+      //     .querySelectorAll('[data-hook="review"] div.a-profile-content')
+      //     .forEach((elem: any) => {
+      //       innerHTMLs.push(elem.innerHTML)
+      //     })
+      //   return innerHTMLs
       // })
-      // const nextButton = await page.$eval('.a-last', (button: Element) => {
-      //   console.log(button, 'button')
-      //   isNextButtonDisabled = button.classList.contains('a-disabled')
-      //   return isNextButtonDisabled
-      // })
-      // await page.click('li.a-last')
+      try {
+        isNextButtonDisabled =
+          (await page.$('.a-last > a:first-child')) === null
+      } catch (error) {
+        isNextButtonDisabled = true
+      }
 
-      // if (!isNextButtonDisabled) {
-      //   console.info('clicked')
-      //   await page.click('li.a-last')
-      // }
-      // nextButton?.click()
-      await page.click('.a-last>a:first-child')
-      await page.waitForSelector('#cm_cr-review_list') // Adjust wait time as needed
-      isNextButtonDisabled = (await page.$('.a-last > a:first-child')) === null
-      console.log(reviewDivList.length, isNextButtonDisabled, 'nextButton')
+      console.log(
+        reviewHTML,
+        reviewDivList.length,
+        isNextButtonDisabled,
+        'nextButton'
+      )
+
+      if (!isNextButtonDisabled) {
+        await page.click('.a-last>a:first-child')
+        const url = await page.evaluate(async () => {
+          const anchor = document.querySelector('.a-last > a:first-child')
+          return (anchor as any)?.href
+        })
+        console.log(url, 'url-----')
+        await page.waitForResponse((response) => {
+          if (response.url().includes('https://www.amazon.de/hz/')) {
+            console.log(response.url(), '----')
+          }
+          return response.url().includes('/reviews-render/ajax/reviews/')
+        })
+        // await page.waitForSelector('[data-hook="review"] div.a-profile-content') // Adjust wait time as needed
+      }
     }
 
-    console.info(reviewDivList, reviewDivList.length, 'reviewDivList')
+    console.info(reviewDivList.length, 'reviewDivList')
     // Parse the HTML using Cheerio
     // const $ = cheerio.load(htmlContent)
     // console.info($.html(), '$')
@@ -86,7 +117,7 @@ const getReviews = async (url: string) => {
     // console.log(data)
 
     // Close the browser
-    await browser.close()
+    // await browser.close()
   } catch (error) {
     console.error(error)
   }
