@@ -1,0 +1,48 @@
+{
+  "name": "amazon-reviews-scrapper",
+  "version": "1.0.0",
+  "description": "\"Amazon Reviews Scraper\" is a Node.js project designed to extract and analyze reviews from Amazon product listings.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx ts-node src/index.ts https://www.amazon.de/-/en/Samsung-Smartphone-Android-Contract-Warranty/dp/B0CW19HLJ4/ref=cm_cr_arp_d_product_top?ie=UTF8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imravichhetri/amazon-reviews-scrapper.git"
+  },
+  "keywords": [
+    "Amazon",
+    "Reviews",
+    "Scraper",
+    "Web",
+    "scraping",
+    "Data",
+    "extraction",
+    "Product",
+    "reviews",
+    "E-commerce",
+    "Data",
+    "mining",
+    "Automation"
+  ],
+  "author": "ravi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/imravichhetri/amazon-reviews-scrapper/issues"
+  },
+  "homepage": "https://github.com/imravichhetri/amazon-reviews-scrapper#readme",
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "@types/puppeteer": "^7.0.4",
+    "ts-node-dev": "^2.0.0",
+    "tsc": "^2.0.4",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "puppeteer": "^22.7.1",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}
