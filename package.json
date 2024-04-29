@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx ts-node src/index.ts https://www.amazon.de/-/en/Samsung-Smartphone-Android-Contract-Warranty/dp/B0CW19HLJ4/ref=cm_cr_arp_d_product_top?ie=UTF8"
+    "start": "npx ts-node src/index.ts https://www.amazon.de/-/en/BATTOOL-8000mAh-BL1860B-Replacement-194205-3/dp/B0CXSGX5ND"
   },
   "repository": {
     "type": "git",
