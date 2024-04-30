@@ -1,8 +1,6 @@
 // Print command-line arguments
 
-import puppeteer from 'puppeteer'
-import * as cheerio from 'cheerio'
-import fs from 'fs'
+import { puppeteer } from '..'
 
 const getReviews = async (url: string) => {
   // The first two elements of process.argv are the Node.js executable path and the path to the script file
@@ -12,6 +10,7 @@ const getReviews = async (url: string) => {
   try {
     const browser = await puppeteer.launch({ headless: false })
     let page = await browser.newPage()
+    // const [page] = await browser.pages()
 
     // Navigate to a web page
     await page.goto(url)
@@ -41,74 +40,14 @@ const getReviews = async (url: string) => {
       await page.waitForSelector('.reviews-loading', { hidden: true })
       // const result = await page.content()
       const reviewDivs = await page.$$('[data-hook="review"]')
-      // const profileDivs = await page.$$(
-      //   'div.a-profile-content>span.a-profile-name'
-      // )
+
       reviewDivList.push(...reviewDivs)
-      // Parse the HTML using Cheerio
-      // const $ = cheerio.load(result);
-      // const $ = cheerio.load(await page.content())
-      //   const $ = cheerio.load(`
-      //   <ul>
-      //     <li>One</li>
-      //     <li>Two</li>
-      //     <li class="blue sel">Three</li>
-      //     <li class="red">Four</li>
-      //   </ul>
-      // `)
-      //   const data = $.extract({
-      //     releases: [
-      //       {
-      //         // First, we select individual release sections.
-      //         selector: 'section',
-      //         // Then, we extract the release date, name, and notes from each section.
-      //         value: {
-      //           // Selectors are executed whitin the context of the selected element.
-      //           name: 'h2',
-      //           date: {
-      //             selector: 'relative-time',
-      //             // The actual date of the release is stored in the `datetime` attribute.
-      //             value: 'datetime',
-      //           },
-      //           notes: {
-      //             selector: '.markdown-body',
-      //             // We are looking for the HTML content of the element.
-      //             value: 'innerHTML',
-      //           },
-      //         },
-      //       },
-      //     ],
-      //   })
+
       const reviewHTML = await page.$$eval(
         '[data-hook="review"] div.a-profile-content',
         (elems) => elems.map((elem) => elem.innerHTML)
       )
-      // const reviewHTML = await Promise.all(
-      //   reviewDivs.map(
-      //     async (elem) =>
-      //       await page.evaluate(
-      //         (el) =>
-      //           document?.querySelector(
-      //             '[data-hook="review"] div.a-profile-content'
-      //           )?.innerHTML,
-      //         // (el) => el?.querySelector('div.a-profile-content')?.innerHTML,
-      //         elem
-      //       )
-      //   )
-      // )
-      // const reviewHTML = await page.evaluate(() => {
-      //   // const
-      //   // return (reviewDiv as any)?.map(
-      //   //   (elem: any) => elem?.querySelector('.a-profile-content')?.innerHTML
-      //   // )
-      //   const innerHTMLs: any[] = []
-      //   document
-      //     .querySelectorAll('[data-hook="review"] div.a-profile-content')
-      //     .forEach((elem: any) => {
-      //       innerHTMLs.push(elem.innerHTML)
-      //     })
-      //   return innerHTMLs
-      // })
+
       try {
         isNextButtonDisabled =
           (await page.$('.a-last > a:first-child')) === null
@@ -127,19 +66,6 @@ const getReviews = async (url: string) => {
       if (!isNextButtonDisabled) {
         // await Promise.all([
         await page.click('.a-last>a:first-child')
-        // const url = await page.evaluate(async () => {
-        //   const anchor = document.querySelector('.a-last > a:first-child')
-        //   return (anchor as any)?.href
-        // })
-        // console.log(url, 'url-----')
-
-        // await page.waitForSelector('div.reviews-loading') // Adjust wait time as needed
-        // await page.waitForResponse((response) => {
-        //   if (response.url().includes('https://www.amazon.de/hz/')) {
-        //     console.log(response.url(), '----')
-        //   }
-        //   return response.url().includes('/reviews-render/ajax/reviews/')
-        // })
 
         await page.waitForFunction(
           () => {
