@@ -1,21 +1,15 @@
-name: Publish to npm
+name: Publish to npm on Tag Merge
+
 on:
-  push:
-    tags:
-      - 'v*' # Trigger on tags starting with 'v'
+  pull_request:
+    types:
+      - closed
+
 jobs:
-  code-check:
-    name: Code Quality Check
-    uses: ./.github/workflows/code-quality.yml
-
-  build:
-    name: Build
-    uses: ./.github/workflows/build.yml
-
   publish:
-    if: (github.event_name == 'push' && github.event.ref_type == 'tag') || (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master')
-    name: Publish
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master' && startsWith(github.event.pull_request.head.ref, 'v')
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
