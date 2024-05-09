@@ -2,7 +2,7 @@ name: Publish to npm
 on:
   push:
     tags:
-      - '[0-9]+\.[0-9]+\.[0-9]+$' # Trigger on new tags starting with '<major>.<minor>.<patch>'
+      - v'[0-9]+\.[0-9]+\.[0-9]+$' # Trigger on new tags starting with '<major>.<minor>.<patch>'
 jobs:
   code-check:
     name: Code Quality Check
