@@ -8,6 +8,10 @@
       "@scrapper": ["./src/scrapper"]
     },
   },
-  "include": ["src/**/*", "src/lib", "lib"],
+  "include": ["src/**/*", "lib/**/*"],
+  "exclude": [
+    "./dist/**/*/*.ts",
+    "./node_modules"
+]
   
 }

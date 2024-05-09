@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     target: 'node16', // Set the target to Node.js
-    outDir: '.', // Output directory
+    outDir: 'dist', // Output directory
     emptyOutDir: false, // Clear the output directory before building
     minify: false, // Don't minify the output for Node.js
     rollupOptions: {

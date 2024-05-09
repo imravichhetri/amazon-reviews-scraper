@@ -16,6 +16,7 @@ if (args.length < 3) {
 const url: string = args[2]
 
 getReviews(url).then((json) => {
-  console.log(json, 'json000')
-  createSheet(json, 'data.xlsx')
+  createSheet(json, 'data.xlsx').then(() => {
+    console.info('File data.xlsx successfully created. ')
+  })
 })

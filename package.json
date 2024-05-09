@@ -7,11 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:lib",
     "build:lib": "NODE_ENV=production vite build",
-    "start": "npx ts-node src/index.ts https://www.amazon.de/-/en/BATTOOL-8000mAh-BL1860B-Replacement-194205-3/dp/B0CXSGX5ND",
+    "start": "npx ts-node lib/ars.ts https://www.amazon.de/-/en/BATTOOL-8000mAh-BL1860B-Replacement-194205-3/dp/B0CXSGX5ND",
     "prettier": "prettier --write \"src/**/*.ts\" \"lib/**/*.ts\"",
     "prettier-check": "prettier --check \"src/**/*.ts\" \"lib/**/*.ts\"",
     "lint": "eslint .",
-    "type-check": "tsc --noEmit"
+    "type-check": "node_modules/typescript/bin/tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -46,7 +46,6 @@
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
     "ts-node-dev": "^2.0.0",
-    "tsc": "^2.0.4",
     "typescript": "^5.4.5",
     "vite": "^5.2.11"
   },
@@ -55,6 +54,7 @@
     "puppeteer": "^22.7.1",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "tsc": "^2.0.4",
     "xlsx": "^0.18.5"
   },
   "bin": {
