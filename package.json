@@ -1,6 +1,6 @@
 {
   "name": "amazon-reviews-scrapper",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "\"Amazon Reviews Scraper\" is a Node.js project designed to extract and analyze reviews from Amazon product listings.",
   "main": "index.js",
   "scripts": {
