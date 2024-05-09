@@ -12,7 +12,7 @@ const getReviews = async (url: string) => {
       headless: true,
       args: ['--no-sandbox'],
     })
-    let page = await browser.newPage()
+    const page = await browser.newPage()
     // const [page] = await browser.pages()
 
     // Navigate to a web page
@@ -31,7 +31,7 @@ const getReviews = async (url: string) => {
 
     // Extract data from the DOM
     let isNextButtonDisabled
-    let reviewList = []
+    const reviewList = []
     // nextButton = await page.$('.a-last')
     // isNextButtonDisabled = await page.$eval('.a-last', (button) =>
     //   button.classList.contains('a-disabled')
@@ -53,25 +53,17 @@ const getReviews = async (url: string) => {
           const countryStr = $(element).find('[data-hook="review-date"]').text()
 
           const ratingRegex = /(.+?) out of 5 stars/
-          const ratingStr = $(element)
-            .find('i.review-rating .a-icon-alt')
-            .text()
+          const ratingStr = $(element).find('i.review-rating .a-icon-alt').text()
           return {
             name: $(element).find('.a-profile-name').text(),
             rating: ratingRegex.exec(ratingStr)?.[1],
             review_title: $(element)
               .find('[data-hook="review-title"] .cr-original-review-content')
               .text(),
-            date: $(element)
-              .find('[data-hook="review-date"]')
-              .text()
-              .split('on')?.[1]
-              ?.trim(),
+            date: $(element).find('[data-hook="review-date"]').text().split('on')?.[1]?.trim(),
             country: countryRegex.exec(countryStr)?.[1],
             verified: $(element).find('[data-hook="avp-badge"]').text(),
-            description: $(element)
-              .find('[data-hook="review-body"] span:first-child')
-              .text(),
+            description: $(element).find('[data-hook="review-body"] span:first-child').text(),
           }
         })
         .get()
@@ -79,8 +71,7 @@ const getReviews = async (url: string) => {
       reviewList.push(...reviews)
       console.log(reviews.length, 'reviews length')
       try {
-        isNextButtonDisabled =
-          (await page.$('.a-last > a:first-child')) === null
+        isNextButtonDisabled = (await page.$('.a-last > a:first-child')) === null
       } catch (error) {
         isNextButtonDisabled = true
       }
@@ -94,12 +85,10 @@ const getReviews = async (url: string) => {
 
         await page.waitForFunction(
           () => {
-            const loadingElements = document.querySelector(
-              'div.reviews-loading'
-            )
+            const loadingElements = document.querySelector('div.reviews-loading')
             return loadingElements !== null
           },
-          { timeout: 10000 }
+          { timeout: 10000 },
         )
         // page.waitForSelector('[data-hook="review"] .a-profile-name'),
         // await page.waitForSelector('[data-hook="review"] div.a-profile-content') // Adjust wait time as needed
