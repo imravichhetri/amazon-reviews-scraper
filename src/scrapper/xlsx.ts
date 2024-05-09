@@ -25,8 +25,7 @@
 
 import { IReview } from './types'
 
-// @typescript-eslint/no-var-requires
-const XLSX = require('xlsx')
+import XLSX = require('xlsx')
 
 // Sample JSON data
 
