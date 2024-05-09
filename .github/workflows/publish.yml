@@ -8,10 +8,10 @@ on:
 jobs:
   code-check:
     uses: ./code-quality.yml
-
+    
   build:
     uses: ./build.yml
-    
+
   publish:
     runs-on: ubuntu-latest
 
