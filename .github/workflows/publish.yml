@@ -1,20 +1,25 @@
 name: Publish to npm
-
 on:
   push:
     tags:
       - '[0-9]+\.[0-9]+\.[0-9]+$' # Trigger on new tags starting with '<major>.<minor>.<patch>'
-
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
 jobs:
   code-check:
-    uses: ./code-quality.yml
+    name: Code Quality Check
+    uses: ./.github/workflows/code-quality.yml
 
   build:
-    uses: ./build.yml
-    
-  publish:
-    runs-on: ubuntu-latest
+    name: Build
+    uses: ./.github/workflows/build.yml
 
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
