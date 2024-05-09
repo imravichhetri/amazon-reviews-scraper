@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "paths": {
+      "@scrapper": ["./src/scrapper"]
+    },
+  },
+  "include": ["src/**/*", "lib/**/*"],
+  "exclude": [
+    "./dist/**/*/*.ts",
+    "./node_modules"
+]
+  
+}
