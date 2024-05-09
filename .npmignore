@@ -1,0 +1,4 @@
+src/
+.gitignore
+vite.config.ts
+lib/
