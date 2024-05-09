@@ -8,7 +8,10 @@ const getReviews = async (url: string) => {
   // const url: string = args.slice(2)
   console.log('Command-line arguments:', url)
   try {
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox'],
+    })
     let page = await browser.newPage()
     // const [page] = await browser.pages()
 
@@ -74,7 +77,7 @@ const getReviews = async (url: string) => {
         .get()
 
       reviewList.push(...reviews)
-
+      console.log(reviews.length, 'reviews length')
       try {
         isNextButtonDisabled =
           (await page.$('.a-last > a:first-child')) === null
@@ -82,18 +85,18 @@ const getReviews = async (url: string) => {
         isNextButtonDisabled = true
       }
 
-      await page.screenshot({ path: 'screenshot.png' })
+      // await page.screenshot({ path: 'screenshot.png' })
 
       if (!isNextButtonDisabled) {
         // await Promise.all([
         await page.click('.a-last>a:first-child')
+        console.log(isNextButtonDisabled, 'isNextButtonDisabled')
 
         await page.waitForFunction(
           () => {
             const loadingElements = document.querySelector(
               'div.reviews-loading'
             )
-            console.log(loadingElements, 'loadingElements')
             return loadingElements !== null
           },
           { timeout: 10000 }

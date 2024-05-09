@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer-extra'
-// import Stealth from 'puppeteer-extra-plugin-stealth'
+import Stealth from 'puppeteer-extra-plugin-stealth'
 
-// puppeteer.use(Stealth())
+puppeteer.use(Stealth())
 
 export { puppeteer }

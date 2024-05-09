@@ -5,25 +5,25 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     target: 'node16', // Set the target to Node.js
-    outDir: 'dist', // Output directory
+    outDir: '.', // Output directory
     emptyOutDir: false, // Clear the output directory before building
     minify: false, // Don't minify the output for Node.js
     rollupOptions: {
-      // input: {
-      //   'dist/main': resolve(__dirname, 'src/index.ts'),
-      //   'bin/ars': resolve(__dirname, 'lib/ars.ts'),
-      // },
+      input: {
+        main: resolve(__dirname, 'src/index.ts'),
+        'bin/ars': resolve(__dirname, 'lib/ars.ts'),
+      },
       output: {
         entryFileNames: '[name].js',
         inlineDynamicImports: false,
         // Remove format option for the library build
-        dir: 'bin',
+        dir: 'dist',
         globals: {}, // Map of globals (if any)
         interop: 'auto', // Automatically detect interop for ES modules
         format: 'umd',
         manualChunks: {},
       },
-      external: ['puppeteer-extra-plugin-stealth'], // Exclude all external dependencies
+      external: [], // Exclude all external dependencies
     },
     lib: {
       entry: [
