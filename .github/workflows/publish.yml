@@ -18,7 +18,7 @@ jobs:
     uses: ./.github/workflows/build.yml
 
   publish:
-    if: github.event_name == 'push' && github.event.ref_type == 'tag' && github.event.pull_request.merged == true
+    if: github.event_name == 'pull_request' && github.event.ref_type == 'tag' && github.event.pull_request.merged == true
     name: Publish
     runs-on: ubuntu-latest
     steps:
