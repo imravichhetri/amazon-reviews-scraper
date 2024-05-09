@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build && vite build --mode lib",
-    "build-bin": "pkg ./dist/bin/ars.js -o ./bin/ars.js",
+    "build": "npm run build:lib && npm run build:bin",
+    "build:lib": "NODE_ENV=production vite build",
+    "build:bin": "pkg --debug -t node16-macos --public-packages='node_modules/puppeteer-extra-plugin-stealth,puppeteer-extra-plugin-stealth/evasions/chrome.app,node_modules/puppeteer-core/' ./bin/ars.js ",
     "start": "npx ts-node src/index.ts https://www.amazon.de/-/en/BATTOOL-8000mAh-BL1860B-Replacement-194205-3/dp/B0CXSGX5ND"
   },
   "repository": {
@@ -52,5 +53,12 @@
   },
   "bin": {
     "ars": "./bin/my-cli.js"
+  },
+  "pkg": {
+    "scripts": [
+      "node_modules/puppeteer",
+      "node_modules/puppeteer-extra-plugin-stealth",
+      "node_modules/puppeteer-core"
+    ]
   }
 }

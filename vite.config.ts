@@ -6,23 +6,31 @@ export default defineConfig({
   build: {
     target: 'node16', // Set the target to Node.js
     outDir: 'dist', // Output directory
-    emptyOutDir: true, // Clear the output directory before building
+    emptyOutDir: false, // Clear the output directory before building
     minify: false, // Don't minify the output for Node.js
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'src/index.ts'),
-        // 'bin/ars': resolve(__dirname, 'lib/ars.ts'),
-      },
+      // input: {
+      //   'dist/main': resolve(__dirname, 'src/index.ts'),
+      //   'bin/ars': resolve(__dirname, 'lib/ars.ts'),
+      // },
       output: {
         entryFileNames: '[name].js',
         inlineDynamicImports: false,
-        format: 'es',
-        // dir: 'bin',
+        // Remove format option for the library build
+        dir: 'bin',
+        globals: {}, // Map of globals (if any)
+        interop: 'auto', // Automatically detect interop for ES modules
+        format: 'umd',
+        manualChunks: {},
       },
+      external: ['puppeteer-extra-plugin-stealth'], // Exclude all external dependencies
     },
     lib: {
-      entry: 'lib/ars.ts', // Entry point for your library
-      name: 'ars', // Name of your library (global variable name)
+      entry: [
+        resolve(__dirname, 'lib/ars.ts'),
+        // resolve(__dirname, 'src/index.ts'),
+      ], // Entry point for your library
+      name: 'ars1', // Name of your library (global variable name)
       formats: ['cjs'],
     },
   },

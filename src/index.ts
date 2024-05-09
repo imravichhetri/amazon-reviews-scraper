@@ -1,1 +1,1 @@
-export { getReviews } from './scrapper'
+export { getReviews } from './scrapper/scrapper'

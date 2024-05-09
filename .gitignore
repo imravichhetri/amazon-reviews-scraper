@@ -132,4 +132,4 @@ dist
 
 bin/
 data.xlsx
-screenshot.png
+./screenshot.png
