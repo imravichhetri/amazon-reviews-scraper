@@ -1,4 +1,5 @@
 // vite.config.ts
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
@@ -8,15 +9,15 @@ export default defineConfig({
     emptyOutDir: true, // Clear the output directory before building
     minify: false, // Don't minify the output for Node.js
     rollupOptions: {
-      // input: {
-      //   'dist/main': resolve(__dirname, 'src/index.ts'),
-      //   'bin/ars': resolve(__dirname, 'src/lib/ars.ts'),
-      // },
+      input: {
+        main: resolve(__dirname, 'src/index.ts'),
+        // 'bin/ars': resolve(__dirname, 'lib/ars.ts'),
+      },
       output: {
         entryFileNames: '[name].js',
         inlineDynamicImports: false,
         format: 'es',
-        dir: 'bin',
+        // dir: 'bin',
       },
     },
     lib: {
