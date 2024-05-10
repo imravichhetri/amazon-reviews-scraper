@@ -1,13 +1,14 @@
 name: Publish to npm on Tag Merge
 
 on:
-  pull_request:
-    types:
-      - closed
-
+  push:
+    tags:
+      - 'v*' # Trigger the workflow on tag push (e.g., v1.0.0)
 jobs:
+  build:
+    uses: ./.github/workflows/build.yml
   publish:
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master' && startsWith(github.event.pull_request.head.ref, 'v')
+    name: Release
     runs-on: ubuntu-latest
 
     steps:
